@@ -8,8 +8,16 @@ class Graph {
         this.points.push(point);
     }
 
+    addSegment(segment) {
+        this.segments.push(segment);
+    }
+
     containsPoint(point) {
         return this.points.find((p) => p.equals(point));
+    }
+
+    containsSegment(segment) {
+        return this.segments.find((s) => s.equals(segment));
     }
 
     draw(ctx) {
