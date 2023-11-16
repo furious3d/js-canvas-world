@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JS Canvas World</title>
+        <link rel="stylesheet" href="./css/styles.css" />
+    </head>
+    <body>
+        <h1>World Editor</h1>
+        <canvas id="appCanvas"></canvas>
+
+        <script src="./js/graph.js"></script>
+        <script src="./js/primitives/point.js"></script>
+        <script src="./js/primitives/segment.js"></script>
+        <script>
+            appCanvas.width = 600;
+            appCanvas.height = 600;
+            const ctx = appCanvas.getContext("2d");
+            const p1 = new Point(180, 50);
+            const p2 = new Point(200, 300);
+            const p3 = new Point(500, 50);
+            const p4 = new Point(20, 200);
+
+            const s1 = new Segment(p1, p2);
+            const s2 = new Segment(p2, p3);
+            const s3 = new Segment(p3, p4);
+
+            const graph = new Graph([p1, p2, p3, p4], [s1, s2, s3]);
+            graph.draw(ctx);
+        </script>
+    </body>
+</html>
