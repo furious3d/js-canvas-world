@@ -7,8 +7,12 @@
     <body>
         <h1>World Editor</h1>
         <canvas id="appCanvas"></canvas>
+        <div id="controls">
+            <button>Add point</button>
+        </div>
 
         <script src="./js/graph.js"></script>
+        <script src="./js/graph-editor.js"></script>
         <script src="./js/primitives/point.js"></script>
         <script src="./js/primitives/segment.js"></script>
         <script>
@@ -25,7 +29,15 @@
             const s3 = new Segment(p3, p4);
 
             const graph = new Graph([p1, p2, p3, p4], [s1, s2, s3]);
-            graph.draw(ctx);
+            const grapthEditor = new GraphEditor(appCanvas, graph);
+            
+            function animate() {
+                ctx.clearRect(0, 0, appCanvas.width, appCanvas.height);
+                grapthEditor.render();
+                requestAnimationFrame(animate);
+            }
+
+            animate();
         </script>
     </body>
 </html>
