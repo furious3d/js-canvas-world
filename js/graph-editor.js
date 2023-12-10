@@ -23,14 +23,22 @@ class GraphEditor {
 
     #initEventListeners() {
         this.canvas.addEventListener("mousedown", (evt) => {
-            const mouse = new Point(evt.offsetX, evt.offsetY);
-            const nearestPoint = getNearestPoint(mouse, this.graph.points, 15);
-            if (nearestPoint) {
-                this.selected = nearestPoint;
-                return;
-            } else {
-                this.graph.addPoint(mouse);
-                this.selected = mouse;
+            if (evt.button == 2 && this.hovered) {   //right button click
+                this.graph.removePoint(this.hovered);
+                this.hovered = null;
+                this.selected = null;
+            }
+
+            if (evt.button == 0) {
+                const mouse = new Point(evt.offsetX, evt.offsetY);
+                const nearestPoint = getNearestPoint(mouse, this.graph.points, 15);
+                if (nearestPoint) {
+                    this.selected = nearestPoint;
+                    return;
+                } else {
+                    this.graph.addPoint(mouse);
+                    this.selected = mouse;
+                }
             }
         });
 
@@ -38,5 +46,7 @@ class GraphEditor {
             const mouse = new Point(evt.offsetX, evt.offsetY);
             this.hovered = getNearestPoint(mouse, this.graph.points, 15);
         });
+
+        this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
     }
 }
