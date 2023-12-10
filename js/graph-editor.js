@@ -24,9 +24,7 @@ class GraphEditor {
     #initEventListeners() {
         this.canvas.addEventListener("mousedown", (evt) => {
             if (evt.button == 2 && this.hovered) {   //right button click
-                this.graph.removePoint(this.hovered);
-                this.hovered = null;
-                this.selected = null;
+                this.#removePoint(this.hovered);
             }
 
             if (evt.button == 0) {
@@ -38,6 +36,7 @@ class GraphEditor {
                 } else {
                     this.graph.addPoint(mouse);
                     this.selected = mouse;
+                    this.hovered = mouse;
                 }
             }
         });
@@ -48,5 +47,13 @@ class GraphEditor {
         });
 
         this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
+    }
+
+    #removePoint(point) {
+        this.graph.removePoint(point);
+        this.hovered = null;
+        if (this.selected == point) {
+            this.selected = null;
+        }
     }
 }
