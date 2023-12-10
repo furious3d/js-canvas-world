@@ -19,8 +19,14 @@ class GraphEditor {
     #initEventListeners() {
         this.canvas.addEventListener("mousedown", (evt) => {
             const mouse = new Point(evt.offsetX, evt.offsetY);
-            this.graph.addPoint(mouse);
-            this.selected = mouse;
+            const nearestPoint = getNearestPoint(mouse, this.graph.points, 15);
+            if (nearestPoint) {
+                this.selected = nearestPoint;
+                return;
+            } else {
+                this.graph.addPoint(mouse);
+                this.selected = mouse;
+            }
         });
     }
 }
