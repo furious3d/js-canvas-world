@@ -26,28 +26,7 @@ class GraphEditor {
     }
 
     #initEventListeners() {
-        this.canvas.addEventListener("mousedown", (evt) => {
-            if (evt.button == 2) {   //right button click
-                if (this.selected) {
-                    this.selected = null;
-                } else if (this.hovered) {
-                    this.#removePoint(this.hovered);
-                }
-            }
-
-            if (evt.button == 0) {
-                const nearestPoint = getNearestPoint(this.mouse, this.graph.points, 15);
-                if (nearestPoint) {
-                    this.#select(nearestPoint);
-                    this.dragging = true;
-                    return;
-                } else {
-                    this.graph.addPoint(this.mouse);
-                    this.#select(this.mouse);
-                    this.hovered = this.mouse;
-                }
-            }
-        });
+        this.canvas.addEventListener("mousedown", (evt) => { this.#handleMouseDown(evt); });
 
         this.canvas.addEventListener("mousemove", (evt) => {
             this.mouse = new Point(evt.offsetX, evt.offsetY);
@@ -60,6 +39,35 @@ class GraphEditor {
 
         this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
         this.canvas.addEventListener("mouseup", () => { this.dragging = false; });
+    }
+
+    #handleMouseDown(evt) {
+        if (evt.button == 2) {   //right button click
+            this.#onRightMouseDown();
+        } else if (evt.button == 0) {
+            this.#onLeftMouseDown();
+        }
+    }
+
+    #onRightMouseDown() {
+        if (this.selected) {
+            this.selected = null;
+        } else if (this.hovered) {
+            this.#removePoint(this.hovered);
+        }
+    }
+
+    #onLeftMouseDown() {
+        const nearestPoint = getNearestPoint(this.mouse, this.graph.points, 15);
+        if (nearestPoint) {
+            this.#select(nearestPoint);
+            this.dragging = true;
+            return;
+        } else {
+            this.graph.addPoint(this.mouse);
+            this.#select(this.mouse);
+            this.hovered = this.mouse;
+        }
     }
 
     #select(point) {
