@@ -5,6 +5,7 @@ class GraphEditor {
         this.graph = graph;
         this.selected = null;
         this.hovered = null;
+        this.dragging = false;
 
         this.#initEventListeners();
     }
@@ -32,6 +33,7 @@ class GraphEditor {
                 const nearestPoint = getNearestPoint(mouse, this.graph.points, 15);
                 if (nearestPoint) {
                     this.selected = nearestPoint;
+                    this.dragging = true;
                     return;
                 } else {
                     this.graph.addPoint(mouse);
@@ -44,9 +46,14 @@ class GraphEditor {
         this.canvas.addEventListener("mousemove", (evt) => {
             const mouse = new Point(evt.offsetX, evt.offsetY);
             this.hovered = getNearestPoint(mouse, this.graph.points, 15);
+            if (this.dragging) {
+                this.selected.x = mouse.x;
+                this.selected.y = mouse.y;
+            }
         });
 
         this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
+        this.canvas.addEventListener("mouseup", () => { this.dragging = false; });
     }
 
     #removePoint(point) {
