@@ -2,6 +2,7 @@ class GraphEditor {
     constructor(canvas, graph) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
+        this.mouse = null;
         this.graph = graph;
         this.selected = null;
         this.hovered = null;
@@ -33,26 +34,25 @@ class GraphEditor {
             }
 
             if (evt.button == 0) {
-                const mouse = new Point(evt.offsetX, evt.offsetY);
-                const nearestPoint = getNearestPoint(mouse, this.graph.points, 15);
+                const nearestPoint = getNearestPoint(this.mouse, this.graph.points, 15);
                 if (nearestPoint) {
                     this.#select(nearestPoint);
                     this.dragging = true;
                     return;
                 } else {
-                    this.graph.addPoint(mouse);
-                    this.#select(mouse);
-                    this.hovered = mouse;
+                    this.graph.addPoint(this.mouse);
+                    this.#select(this.mouse);
+                    this.hovered = this.mouse;
                 }
             }
         });
 
         this.canvas.addEventListener("mousemove", (evt) => {
-            const mouse = new Point(evt.offsetX, evt.offsetY);
-            this.hovered = getNearestPoint(mouse, this.graph.points, 15);
+            this.mouse = new Point(evt.offsetX, evt.offsetY);
+            this.hovered = getNearestPoint(this.mouse, this.graph.points, 15);
             if (this.dragging) {
-                this.selected.x = mouse.x;
-                this.selected.y = mouse.y;
+                this.selected.x = this.mouse.x;
+                this.selected.y = this.mouse.y;
             }
         });
 
