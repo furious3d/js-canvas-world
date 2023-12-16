@@ -15,6 +15,8 @@ class GraphEditor {
         this.graph.draw(this.ctx);
 
         if (this.selected) {
+            const newPoint = this.hovered ? this.hovered : this.mouse;
+            new Segment(this.selected, newPoint).draw(this.ctx, { dash: [3, 3] });
             this.selected.draw(this.ctx, { outline: true });
         }
 
