@@ -32,11 +32,17 @@ class GraphEditor {
                 const mouse = new Point(evt.offsetX, evt.offsetY);
                 const nearestPoint = getNearestPoint(mouse, this.graph.points, 15);
                 if (nearestPoint) {
+                    if (this.selected) {
+                        this.graph.addSegment(new Segment(this.selected, nearestPoint));
+                    }
                     this.selected = nearestPoint;
                     this.dragging = true;
                     return;
                 } else {
                     this.graph.addPoint(mouse);
+                    if (this.selected) {
+                        this.graph.addSegment(new Segment(this.selected, mouse));
+                    }
                     this.selected = mouse;
                     this.hovered = mouse;
                 }
