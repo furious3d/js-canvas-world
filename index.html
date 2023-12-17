@@ -14,6 +14,7 @@
         <script src="./js/graph.js"></script>
         <script src="./js/utils.js"></script>
         <script src="./js/graph-editor.js"></script>
+        <script src="./js/viewport.js"></script>
         <script src="./js/primitives/point.js"></script>
         <script src="./js/primitives/segment.js"></script>
         <script>
@@ -30,11 +31,15 @@
             const s3 = new Segment(p3, p4);
 
             const graph = new Graph([p1, p2, p3, p4], [s1, s2, s3]);
-            const grapthEditor = new GraphEditor(appCanvas, graph);
+            const viewport = new Viewport(appCanvas);
+            const grapthEditor = new GraphEditor(viewport, graph);
             
             function animate() {
                 ctx.clearRect(0, 0, appCanvas.width, appCanvas.height);
+                ctx.save();
+                ctx.scale(1 / viewport.zoom, 1 / viewport.zoom);
                 grapthEditor.render();
+                ctx.restore();
                 requestAnimationFrame(animate);
             }
 
