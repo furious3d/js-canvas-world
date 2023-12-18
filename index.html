@@ -35,14 +35,8 @@
             const grapthEditor = new GraphEditor(viewport, graph);
             
             function animate() {
-                ctx.clearRect(0, 0, appCanvas.width, appCanvas.height);
-                ctx.save();
-                ctx.translate(viewport.center.x, viewport.center.y);
-                ctx.scale(1 / viewport.zoom, 1 / viewport.zoom);
-                const offset = viewport.getOffset();
-                ctx.translate(offset.x, offset.y);
+                viewport.reset();
                 grapthEditor.render();
-                ctx.restore();
                 requestAnimationFrame(animate);
             }
 
