@@ -8,7 +8,8 @@
         <h1>World Editor</h1>
         <canvas id="appCanvas"></canvas>
         <div id="controls">
-            <button>Add point</button>
+            <button onclick="clearAll()">Clear All</button>
+            <button onclick="save()">Save</button>
         </div>
 
         <script src="./js/graph.js"></script>
@@ -30,14 +31,26 @@
             const s2 = new Segment(p2, p3);
             const s3 = new Segment(p3, p4);
 
-            const graph = new Graph([p1, p2, p3, p4], [s1, s2, s3]);
+            const storedGraphString = localStorage.getItem("graph");
+            const graph = storedGraphString 
+                ? Graph.load(storedGraphString) 
+                : new Graph();
             const viewport = new Viewport(appCanvas);
-            const grapthEditor = new GraphEditor(viewport, graph);
+            const graphEditor = new GraphEditor(viewport, graph);
             
             function animate() {
                 viewport.reset();
-                grapthEditor.render();
+                graphEditor.render();
                 requestAnimationFrame(animate);
+            }
+
+            function clearAll() {
+                graphEditor.clearAll();
+                localStorage.removeItem("graph");
+            }
+
+            function save() {
+                localStorage.setItem("graph", JSON.stringify(graph));
             }
 
             animate();

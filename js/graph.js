@@ -4,6 +4,24 @@ class Graph {
         this.segments = segments;
     }
 
+    static load(data) {
+        let points = [];
+        let segments = [];
+        
+        try {
+            const graphData = JSON.parse(data);
+            points = graphData.points.map((p) => new Point(p.x, p.y));
+            segments = graphData.segments.map((s) => new Segment(
+                points.find((p) => p.equals(s.p1)),
+                points.find((p) => p.equals(s.p2))
+            ));
+        } catch(err) {
+            console.error("Invalid graph data stored");
+        }
+
+        return new Graph(points, segments);
+    }
+
     getSegmentsByPoint(point) {
         const segs = [];
         this.segments.forEach((s) => {

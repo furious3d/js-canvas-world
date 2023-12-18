@@ -26,6 +26,12 @@ class GraphEditor {
         }
     }
 
+    clearAll() {
+        this.graph.clear();
+        this.selected = null;
+        this.hovered = null;
+    }
+
     #initEventListeners() {
         this.canvas.addEventListener("mousedown", (evt) => { this.#handleMouseDown(evt); });
         this.canvas.addEventListener("mousemove", (evt) => { this.#onMouseMove(evt); });
