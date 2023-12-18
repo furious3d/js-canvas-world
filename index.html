@@ -32,12 +32,10 @@
             const s3 = new Segment(p3, p4);
 
             const storedGraphString = localStorage.getItem("graph");
-            const graph = storedGraphString 
-                ? Graph.load(storedGraphString) 
-                : new Graph();
+            const graph = storedGraphString ? Graph.load(storedGraphString) : new Graph();
             const viewport = new Viewport(appCanvas);
             const graphEditor = new GraphEditor(viewport, graph);
-            
+
             function animate() {
                 viewport.reset();
                 graphEditor.render();

@@ -19,7 +19,7 @@ class Point {
             ctx.lineWidth = 2;
             ctx.strokeStyle = "rgb(255, 150, 50)";
             ctx.arc(this.x, this.y, rad - 2, 0, Math.PI * 2);
-            ctx.stroke(); 
+            ctx.stroke();
         }
     }
 }

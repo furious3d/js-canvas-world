@@ -11,7 +11,7 @@ class Viewport {
             start: new Point(0, 0),
             end: new Point(0, 0),
             offset: new Point(0, 0),
-            active: false
+            active: false,
         };
 
         this.#initEventHandlers();
@@ -40,19 +40,25 @@ class Viewport {
     }
 
     #initEventHandlers() {
-        this.canvas.addEventListener("mousewheel", (evt) => { this.#onMouseScroll(evt); }, { passive: true });
-        this.canvas.addEventListener("mousedown", (evt) => { 
+        this.canvas.addEventListener(
+            "mousewheel",
+            (evt) => {
+                this.#onMouseScroll(evt);
+            },
+            { passive: true }
+        );
+        this.canvas.addEventListener("mousedown", (evt) => {
             if (evt.button == 1) {
-                this.#onMiddleMouseDown(evt); 
+                this.#onMiddleMouseDown(evt);
             }
         });
         this.canvas.addEventListener("mouseup", (evt) => {
             if (evt.button == 1) {
-                this.#onMiddleMouseUp(evt); 
+                this.#onMiddleMouseUp(evt);
             }
         });
-        this.canvas.addEventListener("mousemove", (evt) => { 
-            this.#onMiddleMouseMove(evt); 
+        this.canvas.addEventListener("mousemove", (evt) => {
+            this.#onMiddleMouseMove(evt);
         });
     }
 
@@ -69,7 +75,7 @@ class Viewport {
                 start: new Point(0, 0),
                 end: new Point(0, 0),
                 offset: new Point(0, 0),
-                active: false
+                active: false,
             };
         }
     }

@@ -33,14 +33,21 @@ class GraphEditor {
     }
 
     #initEventListeners() {
-        this.canvas.addEventListener("mousedown", (evt) => { this.#handleMouseDown(evt); });
-        this.canvas.addEventListener("mousemove", (evt) => { this.#onMouseMove(evt); });
+        this.canvas.addEventListener("mousedown", (evt) => {
+            this.#handleMouseDown(evt);
+        });
+        this.canvas.addEventListener("mousemove", (evt) => {
+            this.#onMouseMove(evt);
+        });
         this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
-        this.canvas.addEventListener("mouseup", () => { this.dragging = false; });
+        this.canvas.addEventListener("mouseup", () => {
+            this.dragging = false;
+        });
     }
 
     #handleMouseDown(evt) {
-        if (evt.button == 2) {   //right button click
+        if (evt.button == 2) {
+            //right button click
             this.#onRightMouseDown();
         } else if (evt.button == 0) {
             this.#onLeftMouseDown();
