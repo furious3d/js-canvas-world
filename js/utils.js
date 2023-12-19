@@ -28,3 +28,14 @@ function subtract(p1, p2) {
 function scale(p, scaleVal) {
     return new Point(p.x * scaleVal, p.y * scaleVal);
 }
+
+function translate(location, alpha, offset) {
+    return new Point(
+        location.x + Math.cos(alpha) * offset,
+        location.y + Math.sin(alpha) * offset
+    );
+}
+
+function angle(v) {
+    return Math.atan2(v.y, v.x);
+}

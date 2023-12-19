@@ -18,6 +18,8 @@
         <script src="./js/viewport.js"></script>
         <script src="./js/primitives/point.js"></script>
         <script src="./js/primitives/segment.js"></script>
+        <script src="./js/primitives/polygon.js"></script>
+        <script src="./js/primitives/segment-envelope.js"></script>
         <script>
             appCanvas.width = 600;
             appCanvas.height = 600;
@@ -39,6 +41,7 @@
             function animate() {
                 viewport.reset();
                 graphEditor.render();
+                //new SegmentEnvelope(graph?.segments[0], 100, 5).draw(ctx);
                 requestAnimationFrame(animate);
             }
 
