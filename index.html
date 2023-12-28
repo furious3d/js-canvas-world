@@ -12,6 +12,7 @@
             <button onclick="save()">Save</button>
         </div>
 
+        <script src="./js/world.js"></script>
         <script src="./js/graph.js"></script>
         <script src="./js/utils.js"></script>
         <script src="./js/graph-editor.js"></script>
@@ -24,24 +25,17 @@
             appCanvas.width = 600;
             appCanvas.height = 600;
             const ctx = appCanvas.getContext("2d");
-            const p1 = new Point(180, 50);
-            const p2 = new Point(200, 300);
-            const p3 = new Point(500, 50);
-            const p4 = new Point(20, 200);
-
-            const s1 = new Segment(p1, p2);
-            const s2 = new Segment(p2, p3);
-            const s3 = new Segment(p3, p4);
-
             const storedGraphString = localStorage.getItem("graph");
             const graph = storedGraphString ? Graph.load(storedGraphString) : new Graph();
+            const world = new World(graph);
             const viewport = new Viewport(appCanvas);
             const graphEditor = new GraphEditor(viewport, graph);
 
             function animate() {
                 viewport.reset();
+                world.generate();
+                world.render(ctx);
                 graphEditor.render();
-                //new SegmentEnvelope(graph?.segments[0], 100, 5).draw(ctx);
                 requestAnimationFrame(animate);
             }
 
