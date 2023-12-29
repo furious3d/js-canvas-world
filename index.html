@@ -27,7 +27,7 @@
             const ctx = appCanvas.getContext("2d");
             const storedGraphString = localStorage.getItem("graph");
             const graph = storedGraphString ? Graph.load(storedGraphString) : new Graph();
-            const world = new World(graph);
+            const world = new World(graph, 100, 10);
             const viewport = new Viewport(appCanvas);
             const graphEditor = new GraphEditor(viewport, graph);
 
@@ -35,6 +35,7 @@
                 viewport.reset();
                 world.generate();
                 world.render(ctx);
+                ctx.globalAlpha = 0.4;
                 graphEditor.render();
                 requestAnimationFrame(animate);
             }

@@ -22,11 +22,13 @@ class World {
 
     render(ctx) {
         this.envelopes.forEach((e) => {
-            e.draw(ctx);
+            e.draw(ctx, { fill: "#bbbbbb", stroke: "#bbbbbb", lineWidth: 15 });
         });
-
+        this.graph.segments.forEach((s) => {
+            s.draw(ctx, { color: "white", width: 8, dash: [20, 5] });
+        });
         this.roadBorders.forEach((b) => {
-            b.draw(ctx, { color: "white", width: 8 });
-        })
+            b.draw(ctx, { color: "white", width: 5 });
+        });
     }
 }

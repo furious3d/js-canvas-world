@@ -4,9 +4,9 @@ class SegmentEnvelope {
         this.poly = this.#buildPolygon(width, roundness);
     }
 
-    draw(ctx) {
+    draw(ctx, options) {
         if (this.poly) {
-            this.poly.draw(ctx);
+            this.poly.draw(ctx, options);
         }
     }
 
