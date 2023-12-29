@@ -7,6 +7,27 @@ class Polygon {
         }
     }
 
+    static union(polygons) {
+        Polygon.breakAll(polygons);
+        const keptSegments = [];
+        for (let i = 0; i < polygons.length; i++) {
+            for (const seg of polygons[i].segments) {
+                let keep = true;
+                for (let j = 0; j < polygons.length; j++) {
+                    if (i == j) continue;
+                    if (polygons[j].containsSegment(seg)) {
+                        keep = false;
+                        break;
+                    }
+                }
+                if (keep) {
+                    keptSegments.push(seg);
+                }
+            }
+        }
+        return keptSegments;
+    }
+
     static breakAll(polygons) {
         for (let i = 0; i < polygons.length - 1; i++) {
             for (let j = i + 1; j < polygons.length; j++) {
@@ -33,6 +54,20 @@ class Polygon {
                 }
             }
         }
+    }
+
+    containsSegment(seg) {
+        const middlePoint = getSegmentMiddlePoint(seg.p1, seg.p2);
+        return this.containsPoint(middlePoint);
+    }
+
+    containsPoint(p) {
+        const outerPoint = new Point(-1000, -1000);
+        let iCount = 0;
+        for (const s of this.segments) {
+            iCount += getIntersection(outerPoint, p, s.p1, s.p2) ? 1 : 0;
+        }
+        return iCount % 2 == 1;
     }
 
     draw(ctx, { stroke = "#0000ff", lineWidth = 2, fill = "rgba(0, 100, 255, 0.3)" } = {}) {
