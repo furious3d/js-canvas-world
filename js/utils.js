@@ -36,6 +36,14 @@ function scale(p, scaleVal) {
     return new Point(p.x * scaleVal, p.y * scaleVal);
 }
 
+function normalize(p) {
+    return scale(p, 1 / magnitude(p));
+}
+
+function magnitude(p) {
+    return Math.hypot(p.x, p.y);
+}
+
 function translate(location, alpha, offset) {
     return new Point(location.x + Math.cos(alpha) * offset, location.y + Math.sin(alpha) * offset);
 }
@@ -49,7 +57,8 @@ function getIntersection(a, b, c, d) {
     const uTop = (c.y - a.y) * (a.x - b.x) - (c.x - a.x) * (a.y - b.y);
     const bottom = (d.y - c.y) * (b.x - a.x) - (d.x - c.x) * (b.y - a.y);
 
-    if (bottom != 0) {
+    const eps = 0.001;
+    if (Math.abs(bottom) > eps) {
         const t = tTop / bottom;
         const u = uTop / bottom;
         if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {

@@ -1,11 +1,15 @@
 class World {
-    constructor(graph, roadWidth = 100, roadRoundness = 6) {
+    constructor(graph, roadWidth = 100, roadRoundness = 6, buildingWidth = 150, buildingMinLength = 150, spacing = 50) {
         this.graph = graph;
         this.roadWidth = roadWidth;
         this.roadRoundness = roadRoundness;
+        this.buildingWidth = buildingWidth;
+        this.buildingMinLength = buildingMinLength;
+        this.spacing = spacing;
 
         this.envelopes = [];
         this.roadBorders = [];
+        this.buildings = [];
 
         this.generate();
     }
@@ -18,6 +22,55 @@ class World {
         }
 
         this.roadBorders = Polygon.union(this.envelopes.map((e) => e.poly));
+        this.buildings = this.#generateBuildings();
+    }
+
+    #generateBuildings() {
+        const envelopes = [];
+        this.graph.segments.forEach((s) => {
+            envelopes.push(
+                new SegmentEnvelope(s, this.roadWidth + this.buildingWidth + this.spacing * 2, this.roadRoundness)
+            );
+        });
+
+        const guides = Polygon.union(envelopes.map((e) => e.poly));
+        for (let i = 0; i < guides.length; i++) {
+            const seg = guides[i];
+            if (seg.length() < this.buildingMinLength) {
+                guides.splice(i, 1);
+                i--;
+            }
+        }
+
+        const supports = [];
+        guides.forEach((s) => {
+            const len = s.length() + this.spacing;
+            const buildingCount = Math.floor(len / (this.buildingMinLength + this.spacing));
+            const buildingLen = len / buildingCount - this.spacing;
+            const dir = s.directionVector();
+            let p1, p2;
+            for (let i = 0; i < buildingCount; i++) {
+                p1 = i == 0 ? s.p1 : add(p2, scale(dir, this.spacing));
+                p2 = add(p1, scale(dir, buildingLen));
+                supports.push(new Segment(p1, p2));
+            }
+        });
+
+        const bases = [];
+        supports.forEach((s) => {
+            bases.push(new SegmentEnvelope(s, this.buildingWidth).poly);
+        });
+
+        for (let i = 0; i < bases.length - 1; i++) {
+            for (let j = i + 1; j < bases.length; j++) {
+                if (bases[i].intersectsPoly(bases[j])) {
+                    bases.splice(j, 1);
+                    j--;
+                }
+            }
+        }
+
+        return bases;
     }
 
     render(ctx) {
@@ -29,6 +82,9 @@ class World {
         });
         this.roadBorders.forEach((b) => {
             b.draw(ctx, { color: "white", width: 5 });
+        });
+        this.buildings.forEach((b) => {
+            b.draw(ctx);
         });
     }
 }
