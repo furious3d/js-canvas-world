@@ -31,9 +31,14 @@
             const viewport = new Viewport(appCanvas);
             const graphEditor = new GraphEditor(viewport, graph);
 
+            let graphHash = graph.hash();
+
             function animate() {
                 viewport.reset();
-                world.generate();
+                if (graph.hash() != graphHash) {
+                    world.generate();
+                    graphHash = graph.hash();
+                }
                 world.render(ctx);
                 ctx.globalAlpha = 0.4;
                 graphEditor.render();
