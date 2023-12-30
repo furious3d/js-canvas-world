@@ -25,6 +25,10 @@ class Graph {
         return new Graph(points, segments);
     }
 
+    hash() {
+        return JSON.stringify(this);
+    }
+
     getSegmentsByPoint(point) {
         const segs = [];
         this.segments.forEach((s) => {
