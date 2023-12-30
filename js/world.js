@@ -1,15 +1,25 @@
 class World {
-    constructor(graph, roadWidth = 100, roadRoundness = 6, buildingWidth = 150, buildingMinLength = 150, spacing = 50) {
+    constructor(
+        graph,
+        roadWidth = 100,
+        roadRoundness = 6,
+        buildingWidth = 150,
+        buildingMinLength = 150,
+        spacing = 50,
+        treeSize = 150
+    ) {
         this.graph = graph;
         this.roadWidth = roadWidth;
         this.roadRoundness = roadRoundness;
         this.buildingWidth = buildingWidth;
         this.buildingMinLength = buildingMinLength;
         this.spacing = spacing;
+        this.treeSize = treeSize;
 
         this.envelopes = [];
         this.roadBorders = [];
         this.buildings = [];
+        this.trees = [];
 
         this.generate();
     }
@@ -23,6 +33,7 @@ class World {
 
         this.roadBorders = Polygon.union(this.envelopes.map((e) => e.poly));
         this.buildings = this.#generateBuildings();
+        this.trees = this.#generateTrees();
     }
 
     #generateBuildings() {
@@ -73,6 +84,61 @@ class World {
         return bases;
     }
 
+    #generateTrees() {
+        const points = [
+            ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
+            ...this.buildings.map((b) => b.points).flat(),
+        ];
+        const left = Math.min(...points.map((p) => p.x));
+        const right = Math.max(...points.map((p) => p.x));
+        const top = Math.min(...points.map((p) => p.y));
+        const bottom = Math.max(...points.map((p) => p.y));
+        const forbiddenPolys = [...this.buildings, ...this.envelopes.map((e) => e.poly)];
+        const trees = [];
+
+        let attemptsNum = 0;
+
+        while (attemptsNum < 100) {
+            const treePoint = new Point(lerp(right, left, Math.random()), lerp(top, bottom, Math.random()));
+            let keep = true;
+            for (const poly of forbiddenPolys) {
+                if (poly.containsPoint(treePoint) || poly.distanceToPoint(treePoint) < this.treeSize) {
+                    keep = false;
+                    break;
+                }
+            }
+
+            if (keep) {
+                for (const t of trees) {
+                    if (distance(treePoint, t) < this.treeSize) {
+                        keep = false;
+                        break;
+                    }
+                }
+            }
+
+            if (keep) {
+                let closeToOtherObjects = false;
+                for (const poly of forbiddenPolys) {
+                    if (poly.distanceToPoint(treePoint) < this.treeSize * 2) {
+                        closeToOtherObjects = true;
+                        break;
+                    }
+                }
+                keep = closeToOtherObjects;
+            }
+
+            if (keep) {
+                trees.push(treePoint);
+                attemptsNum = 0;
+            }
+            
+            attemptsNum++;
+        }
+
+        return trees;
+    }
+
     render(ctx) {
         this.envelopes.forEach((e) => {
             e.draw(ctx, { fill: "#bbbbbb", stroke: "#bbbbbb", lineWidth: 15 });
@@ -85,6 +151,9 @@ class World {
         });
         this.buildings.forEach((b) => {
             b.draw(ctx);
+        });
+        this.trees.forEach((t) => {
+            t.draw(ctx, { color: "rgba(20, 120, 0, 0.5", size: this.treeSize });
         });
     }
 }

@@ -81,6 +81,10 @@ class Polygon {
         return iCount % 2 == 1;
     }
 
+    distanceToPoint(p) {
+        return Math.min(...this.segments.map((s) => s.distanceToPoint(p)));
+    }
+
     draw(ctx, { stroke = "#0000ff", lineWidth = 2, fill = "rgba(0, 100, 255, 0.3)" } = {}) {
         ctx.beginPath();
         ctx.fillStyle = fill;
