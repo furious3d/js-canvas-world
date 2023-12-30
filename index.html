@@ -22,8 +22,8 @@
         <script src="./js/primitives/polygon.js"></script>
         <script src="./js/primitives/segment-envelope.js"></script>
         <script>
-            appCanvas.width = 600;
-            appCanvas.height = 600;
+            appCanvas.width = 1000;
+            appCanvas.height = 800;
             const ctx = appCanvas.getContext("2d");
             const storedGraphString = localStorage.getItem("graph");
             const graph = storedGraphString ? Graph.load(storedGraphString) : new Graph();
