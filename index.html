@@ -13,6 +13,7 @@
         </div>
 
         <script src="./js/world.js"></script>
+        <script src="./js/world/tree.js"></script>
         <script src="./js/graph.js"></script>
         <script src="./js/utils.js"></script>
         <script src="./js/graph-editor.js"></script>
@@ -39,7 +40,8 @@
                     world.generate();
                     graphHash = graph.hash();
                 }
-                world.render(ctx);
+                const viewPoint = scale(viewport.offset, -1);
+                world.render(ctx, viewPoint);
                 ctx.globalAlpha = 0.4;
                 graphEditor.render();
                 requestAnimationFrame(animate);

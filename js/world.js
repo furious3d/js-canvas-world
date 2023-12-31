@@ -111,7 +111,7 @@ class World {
 
             if (keep) {
                 for (const t of trees) {
-                    if (distance(treePoint, t) < this.treeSize) {
+                    if (distance(t.center, treePoint) < this.treeSize) {
                         keep = false;
                         break;
                     }
@@ -130,7 +130,7 @@ class World {
             }
 
             if (keep) {
-                trees.push(treePoint);
+                trees.push(new Tree(treePoint, this.treeSize));
                 attemptsNum = 0;
             }
 
@@ -140,7 +140,7 @@ class World {
         return trees;
     }
 
-    render(ctx) {
+    render(ctx, viewPoint) {
         this.envelopes.forEach((e) => {
             e.draw(ctx, { fill: "#bbbbbb", stroke: "#bbbbbb", lineWidth: 15 });
         });
@@ -154,7 +154,7 @@ class World {
             b.draw(ctx);
         });
         this.trees.forEach((t) => {
-            t.draw(ctx, { color: "rgba(20, 120, 0, 0.5", size: this.treeSize });
+            t.draw(ctx, viewPoint);
         });
     }
 }

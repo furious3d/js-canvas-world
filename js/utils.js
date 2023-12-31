@@ -80,3 +80,7 @@ function getIntersection(a, b, c, d) {
 function lerp(a, b, t) {
     return a + (b - a) * t;
 }
+
+function lerp2D(a, b, t) {
+    return new Point(lerp(a.x, b.x, t), lerp(a.y, b.y, t));
+}
