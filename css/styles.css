@@ -10,6 +10,11 @@ body {
 
 h1 {
     color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20pt;
+    color: #f0ffcc;
+    text-shadow: 2px 2px 3px #44aa22;
+    margin: 0 0 5px 0;
 }
 
 #appCanvas {
