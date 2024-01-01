@@ -82,19 +82,19 @@ class World {
             }
         }
 
-        return bases;
+        return bases.map((b) => new Building(b));
     }
 
     #generateTrees() {
         const points = [
             ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
-            ...this.buildings.map((b) => b.points).flat(),
+            ...this.buildings.map((b) => b.base.points).flat(),
         ];
         const left = Math.min(...points.map((p) => p.x));
         const right = Math.max(...points.map((p) => p.x));
         const top = Math.min(...points.map((p) => p.y));
         const bottom = Math.max(...points.map((p) => p.y));
-        const forbiddenPolys = [...this.buildings, ...this.envelopes.map((e) => e.poly)];
+        const forbiddenPolys = [...this.buildings.map((b) => b.base), ...this.envelopes.map((e) => e.poly)];
         const trees = [];
 
         let attemptsNum = 0;
@@ -150,11 +150,15 @@ class World {
         this.roadBorders.forEach((b) => {
             b.draw(ctx, { color: "white", width: 5 });
         });
-        this.buildings.forEach((b) => {
-            b.draw(ctx);
-        });
-        this.trees.forEach((t) => {
-            t.draw(ctx, viewPoint);
+
+        const items = [...this.buildings, ...this.trees];
+
+        items.sort((a, b) => 
+            b.base.distanceToPoint(viewPoint) - a.base.distanceToPoint(viewPoint)
+        ); 
+
+        items.forEach((item) => {
+            item.draw(ctx, viewPoint);
         });
     }
 }
