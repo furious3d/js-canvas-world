@@ -7,9 +7,15 @@
     <body>
         <h1>World Editor</h1>
         <canvas id="appCanvas"></canvas>
-        <div id="controls">
-            <button onclick="clearAll()">Clear All</button>
-            <button onclick="save()">Save</button>
+        <div id="controls" class="buttons">
+            <div class="left">
+                <button onclick="clearAll()">❌</button>
+                <button onclick="save()">💽</button>
+            </div>
+            <div class="right">
+                <button id="graphBtn" onclick="setMode('graph')">🚏</button>
+                <button id="stopBtn" onclick="setMode('stop')">🚦</button>
+            </div>
         </div>
 
         <script src="./js/world.js"></script>
@@ -57,6 +63,26 @@
                 localStorage.setItem("graph", JSON.stringify(graph));
             }
 
+            function setMode(mode) {
+                disableEditors();
+                switch (mode) {
+                    case "graph":
+                        graphBtn.classList.add("active");
+                        graphEditor.enable();
+                        break;
+                    case "stop":
+                        stopBtn.classList.add("active");
+                        break;
+                }
+            }
+
+            function disableEditors() {
+                graphBtn.classList.remove("active");
+                graphEditor.disable();
+                stopBtn.classList.remove("active");
+            }
+
+            setMode("graph");
             animate();
         </script>
     </body>

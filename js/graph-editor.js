@@ -8,8 +8,16 @@ class GraphEditor {
         this.selected = null;
         this.hovered = null;
         this.dragging = false;
+    }
 
+    enable() {
         this.#initEventListeners();
+    }
+
+    disable() {
+        this.#removeEventListeners();
+        this.selected = null;
+        this.hovered = null;
     }
 
     render() {
@@ -33,19 +41,20 @@ class GraphEditor {
     }
 
     #initEventListeners() {
-        this.canvas.addEventListener("mousedown", (evt) => {
-            this.#handleMouseDown(evt);
-        });
-        this.canvas.addEventListener("mousemove", (evt) => {
-            this.#onMouseMove(evt);
-        });
-        this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
-        this.canvas.addEventListener("mouseup", () => {
-            this.dragging = false;
-        });
+        this.canvas.addEventListener("mousedown", this.#handleMouseDown);
+        this.canvas.addEventListener("mousemove", this.#onMouseMove);
+        this.canvas.addEventListener("mouseup", this.#onMouseUp);
+        this.canvas.addEventListener("contextmenu", this.#onContextMenu);
     }
 
-    #handleMouseDown(evt) {
+    #removeEventListeners() {
+        this.canvas.removeEventListener("mousedown", this.#handleMouseDown);
+        this.canvas.removeEventListener("mousemove", this.#onMouseMove);
+        this.canvas.removeEventListener("mouseup", this.#onMouseUp);
+        this.canvas.removeEventListener("contextmenu", this.#onContextMenu);
+    }
+
+    #handleMouseDown = (evt) => {
         if (evt.button == 2) {
             //right button click
             this.#onRightMouseDown();
@@ -53,6 +62,21 @@ class GraphEditor {
             this.#onLeftMouseDown();
         }
     }
+
+    #onMouseMove = (evt) => {
+        this.mouse = this.viewport.getMouse(evt, true);
+        this.hovered = getNearestPoint(this.mouse, this.graph.points, 15 * this.viewport.zoom);
+        if (this.dragging) {
+            this.selected.x = this.mouse.x;
+            this.selected.y = this.mouse.y;
+        }
+    }
+
+    #onMouseUp = () => {
+        this.dragging = false;
+    };
+
+    #onContextMenu = (evt) => evt.preventDefault();
 
     #onRightMouseDown() {
         if (this.selected) {
@@ -71,15 +95,6 @@ class GraphEditor {
             this.graph.addPoint(this.mouse);
             this.#select(this.mouse);
             this.hovered = this.mouse;
-        }
-    }
-
-    #onMouseMove(evt) {
-        this.mouse = this.viewport.getMouse(evt, true);
-        this.hovered = getNearestPoint(this.mouse, this.graph.points, 15 * this.viewport.zoom);
-        if (this.dragging) {
-            this.selected.x = this.mouse.x;
-            this.selected.y = this.mouse.y;
         }
     }
 

@@ -20,3 +20,29 @@ h1 {
 #appCanvas {
     background-color: #66aa55;
 }
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+}
+.buttons > div {
+    padding: 0 20px;
+}
+.buttons button {
+    width: 60px;
+    height: 60px;
+    font-size: 20pt;
+    background-color: #002244;
+    border: solid 2px #0066aa;
+    border-radius: 5px;
+}
+.buttons button:hover {
+    border-color: #77aaff;
+}
+.buttons button.active {
+    background-color: #0066aa;
+}
+.buttons button:disabled {
+    filter: grayscale();
+}
