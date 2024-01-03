@@ -19,12 +19,13 @@
         </div>
 
         <script src="./js/world.js"></script>
-        <script src="./js/world/tree.js"></script>
-        <script src="./js/world/building.js"></script>
+        <script src="./js/viewport.js"></script>
         <script src="./js/graph.js"></script>
         <script src="./js/utils.js"></script>
-        <script src="./js/graph-editor.js"></script>
-        <script src="./js/viewport.js"></script>
+        <script src="./js/world/tree.js"></script>
+        <script src="./js/world/building.js"></script>
+        <script src="./js/editors/graph-editor.js"></script>
+        <script src="./js/editors/stop-editor.js"></script>
         <script src="./js/primitives/point.js"></script>
         <script src="./js/primitives/segment.js"></script>
         <script src="./js/primitives/polygon.js"></script>
@@ -38,6 +39,7 @@
             const world = new World(graph, 100, 10);
             const viewport = new Viewport(appCanvas);
             const graphEditor = new GraphEditor(viewport, graph);
+            const stopEditor = new StopEditor(viewport, world);
 
             let graphHash = graph.hash();
 
@@ -51,6 +53,7 @@
                 world.render(ctx, viewPoint);
                 ctx.globalAlpha = 0.4;
                 graphEditor.render();
+                stopEditor.render();
                 requestAnimationFrame(animate);
             }
 
@@ -72,6 +75,7 @@
                         break;
                     case "stop":
                         stopBtn.classList.add("active");
+                        stopEditor.enable();
                         break;
                 }
             }
@@ -80,6 +84,7 @@
                 graphBtn.classList.remove("active");
                 graphEditor.disable();
                 stopBtn.classList.remove("active");
+                stopEditor.disable();
             }
 
             setMode("graph");
