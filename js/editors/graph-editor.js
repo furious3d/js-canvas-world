@@ -61,7 +61,7 @@ class GraphEditor {
         } else if (evt.button == 0) {
             this.#onLeftMouseDown();
         }
-    }
+    };
 
     #onMouseMove = (evt) => {
         this.mouse = this.viewport.getMouse(evt, true);
@@ -70,7 +70,7 @@ class GraphEditor {
             this.selected.x = this.mouse.x;
             this.selected.y = this.mouse.y;
         }
-    }
+    };
 
     #onMouseUp = () => {
         this.dragging = false;

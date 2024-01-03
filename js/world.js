@@ -44,9 +44,7 @@ class World {
     #generateLaneGuides() {
         const envelopes = [];
         this.graph.segments.forEach((s) => {
-            envelopes.push(
-                new SegmentEnvelope(s, this.roadWidth / 2, this.roadRoundness)
-            );
+            envelopes.push(new SegmentEnvelope(s, this.roadWidth / 2, this.roadRoundness));
         });
 
         const segments = Polygon.union(envelopes.map((e) => e.poly));
@@ -174,9 +172,7 @@ class World {
 
         const items = [...this.buildings, ...this.trees];
 
-        items.sort((a, b) => 
-            b.base.distanceToPoint(viewPoint) - a.base.distanceToPoint(viewPoint)
-        ); 
+        items.sort((a, b) => b.base.distanceToPoint(viewPoint) - a.base.distanceToPoint(viewPoint));
 
         items.forEach((item) => {
             item.draw(ctx, viewPoint);
