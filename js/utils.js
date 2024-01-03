@@ -13,6 +13,21 @@ function getNearestPoint(location, points, area = Number.MAX_SAFE_INTEGER) {
     return nearest;
 }
 
+function getNearestSegment(location, segments, area = Number.MAX_SAFE_INTEGER) {
+    let minDist = Number.MAX_SAFE_INTEGER;
+    let nearest = null;
+
+    for (const s of segments) {
+        const dist = s.distanceToPoint(location);
+        if (dist < minDist && dist <= area) {
+            minDist = dist;
+            nearest = s;
+        }
+    }
+
+    return nearest;
+}
+
 function distance(p1, p2) {
     return Math.hypot(p2.x - p1.x, p2.y - p1.y);
 }

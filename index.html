@@ -14,7 +14,8 @@
             </div>
             <div class="right">
                 <button id="graphBtn" onclick="setMode('graph')">🚏</button>
-                <button id="stopBtn" onclick="setMode('stop')">🚦</button>
+                <button id="stopBtn" onclick="setMode('stop')">🛑</button>
+                <button id="trafficlightBtn" onclick="setMode('trafficlight')">🚦</button>
             </div>
         </div>
 
@@ -24,6 +25,7 @@
         <script src="./js/utils.js"></script>
         <script src="./js/world/tree.js"></script>
         <script src="./js/world/building.js"></script>
+        <script src="./js/world/stop-sign.js"></script>
         <script src="./js/editors/graph-editor.js"></script>
         <script src="./js/editors/stop-editor.js"></script>
         <script src="./js/primitives/point.js"></script>
@@ -60,6 +62,7 @@
             function clearAll() {
                 graphEditor.clearAll();
                 localStorage.removeItem("graph");
+                world.signs.length = 0;
             }
 
             function save() {
