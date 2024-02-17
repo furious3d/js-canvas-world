@@ -15,6 +15,7 @@
             <div class="right">
                 <button id="graphBtn" onclick="setMode('graph')">🚏</button>
                 <button id="stopBtn" onclick="setMode('stop')">🛑</button>
+                <button id="crossingBtn" onclick="setMode('crossing')">🚶‍♂️</button>
                 <button id="trafficlightBtn" onclick="setMode('trafficlight')">🚦</button>
             </div>
         </div>
@@ -26,8 +27,11 @@
         <script src="./js/world/tree.js"></script>
         <script src="./js/world/building.js"></script>
         <script src="./js/world/stop-sign.js"></script>
+        <script src="./js/world/crossing-sign.js"></script>
         <script src="./js/editors/graph-editor.js"></script>
+        <script src="./js/editors/sign-editor.js"></script>
         <script src="./js/editors/stop-editor.js"></script>
+        <script src="./js/editors/crossing-editor.js"></script>
         <script src="./js/primitives/point.js"></script>
         <script src="./js/primitives/segment.js"></script>
         <script src="./js/primitives/polygon.js"></script>
@@ -42,6 +46,7 @@
             const viewport = new Viewport(appCanvas);
             const graphEditor = new GraphEditor(viewport, graph);
             const stopEditor = new StopEditor(viewport, world);
+            const crossingEditor = new CrossingEditor(viewport, world);
 
             let graphHash = graph.hash();
 
@@ -56,6 +61,7 @@
                 ctx.globalAlpha = 0.4;
                 graphEditor.render();
                 stopEditor.render();
+                crossingEditor.render();
                 requestAnimationFrame(animate);
             }
 
@@ -80,6 +86,10 @@
                         stopBtn.classList.add("active");
                         stopEditor.enable();
                         break;
+                    case "crossing":
+                        crossingBtn.classList.add("active");
+                        crossingEditor.enable();
+                        break;
                 }
             }
 
@@ -88,6 +98,8 @@
                 graphEditor.disable();
                 stopBtn.classList.remove("active");
                 stopEditor.disable();
+                crossingBtn.classList.remove("active");
+                crossingEditor.disable();
             }
 
             setMode("graph");
