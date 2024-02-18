@@ -16,6 +16,7 @@
                 <button id="graphBtn" onclick="setMode('graph')">🚏</button>
                 <button id="stopBtn" onclick="setMode('stop')">🛑</button>
                 <button id="crossingBtn" onclick="setMode('crossing')">🚶‍♂️</button>
+                <button id="startBtn" onclick="setMode('start')">🚘</button>
                 <button id="trafficlightBtn" onclick="setMode('trafficlight')">🚦</button>
             </div>
         </div>
@@ -28,10 +29,12 @@
         <script src="./js/world/building.js"></script>
         <script src="./js/world/sign.js"></script>
         <script src="./js/world/stop-sign.js"></script>
+        <script src="./js/world/start-sign.js"></script>
         <script src="./js/world/crossing-sign.js"></script>
         <script src="./js/editors/graph-editor.js"></script>
         <script src="./js/editors/sign-editor.js"></script>
         <script src="./js/editors/stop-editor.js"></script>
+        <script src="./js/editors/start-editor.js"></script>
         <script src="./js/editors/crossing-editor.js"></script>
         <script src="./js/primitives/point.js"></script>
         <script src="./js/primitives/segment.js"></script>
@@ -49,6 +52,7 @@
                 graph: { button: graphBtn, editor: new GraphEditor(viewport, graph) },
                 stop: { button: stopBtn, editor: new StopEditor(viewport, world) },
                 crossing: { button: crossingBtn, editor: new CrossingEditor(viewport, world) },
+                start: { button: startBtn, editor: new StartEditor(viewport, world) },
             };
 
             let graphHash = graph.hash();
