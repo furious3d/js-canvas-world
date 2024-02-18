@@ -45,9 +45,11 @@
             const graph = storedGraphString ? Graph.load(storedGraphString) : new Graph();
             const world = new World(graph, 100, 10);
             const viewport = new Viewport(appCanvas);
-            const graphEditor = new GraphEditor(viewport, graph);
-            const stopEditor = new StopEditor(viewport, world);
-            const crossingEditor = new CrossingEditor(viewport, world);
+            const tools = {
+                graph: { button: graphBtn, editor: new GraphEditor(viewport, graph) },
+                stop: { button: stopBtn, editor: new StopEditor(viewport, world) },
+                crossing: { button: crossingBtn, editor: new CrossingEditor(viewport, world) },
+            };
 
             let graphHash = graph.hash();
 
@@ -60,14 +62,14 @@
                 const viewPoint = scale(viewport.offset, -1);
                 world.render(ctx, viewPoint);
                 ctx.globalAlpha = 0.4;
-                graphEditor.render();
-                stopEditor.render();
-                crossingEditor.render();
+                for (const tool of Object.values(tools)) {
+                    tool.editor.render();
+                }
                 requestAnimationFrame(animate);
             }
 
             function clearAll() {
-                graphEditor.clearAll();
+                tools["graph"].editor.clearAll();
                 localStorage.removeItem("graph");
                 world.signs.length = 0;
             }
@@ -78,29 +80,15 @@
 
             function setMode(mode) {
                 disableEditors();
-                switch (mode) {
-                    case "graph":
-                        graphBtn.classList.add("active");
-                        graphEditor.enable();
-                        break;
-                    case "stop":
-                        stopBtn.classList.add("active");
-                        stopEditor.enable();
-                        break;
-                    case "crossing":
-                        crossingBtn.classList.add("active");
-                        crossingEditor.enable();
-                        break;
-                }
+                tools[mode].button.classList.add("active");
+                tools[mode].editor.enable();
             }
 
             function disableEditors() {
-                graphBtn.classList.remove("active");
-                graphEditor.disable();
-                stopBtn.classList.remove("active");
-                stopEditor.disable();
-                crossingBtn.classList.remove("active");
-                crossingEditor.disable();
+                for (const tool of Object.values(tools)) {
+                    tool.button.classList.remove("active");
+                    tool.editor.disable();
+                }
             }
 
             setMode("graph");
